@@ -1,0 +1,40 @@
+name: Setup
+description: Setup Terraform & Terragrunt
+
+inputs:
+  terraform-version:
+    description: Terraform version to use
+    required: false
+    default: ~1
+  terragrunt-version:
+    description: Terragrunt version to use
+    required: false
+    default: 0.69.10
+
+runs:
+  using: composite
+  steps:
+    - name: Load cached Terragrunt installation
+      id: cached-terragrunt
+      uses: actions/cache@v4
+      with:
+        path: /bin/terragrunt
+        key: terragrunt-${{ inputs.terragrunt-version }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.11.3
+
+    - name: Debug Terraform installation
+      shell: bash
+      run: |
+        which terraform
+        echo $TERRAFORM_CLI_PATH
+
+    - name: Setup Terragrunt
+      if: ${{ steps.cached-terragrunt.outputs.cache-hit != 'true' }}
+      shell: bash
+      run: |
+        sudo wget -q -O /bin/terragrunt "https://github.com/gruntwork-io/terragrunt/releases/download/v${{ inputs.terragrunt-version }}/terragrunt_linux_amd64"
+        sudo chmod +x /bin/terragrunt

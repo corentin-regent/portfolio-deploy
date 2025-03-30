@@ -7,8 +7,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "4ops.terraform",
         "amazonwebservices.aws-toolkit-vscode",
-        "bierner.markdown-preview-github-styles",
         "github.vscode-github-actions",
         "redhat.vscode-yaml",
         "yzhang.markdown-all-in-one"

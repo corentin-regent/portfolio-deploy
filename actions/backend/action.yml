@@ -1,0 +1,51 @@
+name: Deploy Portfolio Backend
+description: Github Action for automatically deploying the Go Portfolio backend
+  as an AWS Lambda function
+
+inputs:
+  aws-access-key:
+    description: AWS access key to use for the deployment
+    required: true
+  aws-region:
+    description: AWS region to which to deploy
+    required: false
+    default: eu-west-3
+  aws-secret-key:
+    description: AWS secret access key to use for the deployment
+    required: true
+  environment:
+    description: Environment to which to deploy
+    required: true
+  executable:
+    description: Absolute path to the Go executable to deploy
+    required: true
+  source-email-password:
+    description: Plain password for the source email address
+    required: true
+  state-bucket-basename:
+    description: Base name of the S3 bucket that stores the remote Terraform state
+    required: true
+  state-table-basename:
+    description: Base name of the DynamoDB that locks the remote Terraform state
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Terraform & Terragrunt
+      uses: ${{ github.action_path }}/../setup
+
+    - name: Deploy Portfolio Backend
+      env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key }}
+        AWS_REGION: ${{ inputs.aws-region }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-key }}
+        TF_VAR_executable: ${{ inputs.executable }}
+        TF_VAR_source_email_password: ${{ inputs.source-email-password }}
+        TF_VAR_state_bucket_basename: ${{ inputs.state-bucket-basename }}
+        TF_VAR_state_table_basename: ${{ inputs.state-table-basename }}
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}/../../live/${{ inputs.environment }}/backend/
+        terragrunt init
+        terragrunt apply -auto-approve
