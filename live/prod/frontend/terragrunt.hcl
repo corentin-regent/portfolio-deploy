@@ -1,11 +1,3 @@
-include "root" {
-  path = find_in_parent_folders("terragrunt.hcl")
-}
-
-terraform {
-  source = "../../../modules/frontend"
-}
-
-inputs = {
-    website_bucket_basename = get_env("TF_VAR_website_bucket_basename")}
+include {
+  path = "${get_parent_terragrunt_dir()}/live/_common/frontend/terragrunt.hcl"
 }

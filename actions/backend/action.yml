@@ -22,12 +22,6 @@ inputs:
   source-email-password:
     description: Plain password for the source email address
     required: true
-  state-bucket-basename:
-    description: Base name of the S3 bucket that stores the remote Terraform state
-    required: true
-  state-table-basename:
-    description: Base name of the DynamoDB that locks the remote Terraform state
-    required: true
 
 runs:
   using: composite

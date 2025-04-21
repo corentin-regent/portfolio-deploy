@@ -2,11 +2,11 @@ remote_state {
   backend = "s3"
 
   config = {
-    bucket         = "${get_env("TF_VAR_state_bucket_basename")}-${var.environment}"
+    bucket         = "portfolio-tfstate-${get_aws_account_id()}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
     region         = get_env("AWS_REGION")
     encrypt        = true
-    dynamodb_table = "${get_env("TF_VAR_state_table_basename")}-${var.environment}"
+    dynamodb_table = "portfolio-locks-${get_aws_account_id()}"
   }
 
   generate = {

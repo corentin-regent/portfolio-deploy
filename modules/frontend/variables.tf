@@ -2,7 +2,6 @@ variable "environment" {
   type = string
 }
 
-variable "website_bucket_basename" {
-  type      = string
-  sensitive = true
+variable "static_files" {
+  type = string
 }

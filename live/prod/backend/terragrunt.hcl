@@ -1,9 +1,5 @@
-include "root" {
-  path = find_in_parent_folders("terragrunt.hcl")
-}
-
-terraform {
-  source = "../../../modules/backend"
+include {
+  path = "${get_parent_terragrunt_dir()}/live/_common/backend/terragrunt.hcl"
 }
 
 inputs = {
@@ -17,5 +13,4 @@ inputs = {
     TARGET_EMAIL_ADDRESS = "corentin.regent@gmail.com"
     TIMEOUT_REQUEST_PROCESSING = 5000
   }
-  executable  = get_env("TF_VAR_executable")
 }
