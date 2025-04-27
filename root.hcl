@@ -48,5 +48,9 @@ EOF
 }
 
 inputs = {
-  environment  = regex(".*/live/(?P<env>.*?)/.*", get_terragrunt_dir()).env
+  environment                = regex(".*/live/(?P<env>.*?)/.*", get_terragrunt_dir()).env
+
+  cloudfront_logs_folder     = "cloudfront-logs"
+  lambda_logs_folder         = "lambda-logs"
+  website_access_logs_folder = "website-access-logs"
 }

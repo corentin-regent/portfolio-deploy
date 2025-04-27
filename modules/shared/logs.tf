@@ -29,7 +29,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
           Service = "logging.s3.amazonaws.com"
         }
         Action   = "s3:PutObject"
-        Resource = "${module.log_bucket.s3_bucket_arn}/s3-access-logs/*"
+        Resource = "${module.log_bucket.s3_bucket_arn}/${var.website_access_logs_folder}/*"
         Condition = {
           StringEquals = {
             "aws:SourceAccount" = data.aws_caller_identity.current.account_id
@@ -43,7 +43,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
         }
         Action   = "s3:PutObject"
-        Resource = "${module.log_bucket.s3_bucket_arn}/cloudfront-logs/*"
+        Resource = "${module.log_bucket.s3_bucket_arn}/${var.cloudfront_logs_folder}/*"
       },
       {
         Sid    = "LambdaLogsPolicy"
@@ -52,7 +52,7 @@ resource "aws_s3_bucket_policy" "log_bucket_policy" {
           Service = "logs.amazonaws.com"
         }
         Action   = "s3:PutObject"
-        Resource = "${module.log_bucket.s3_bucket_arn}/lambda-logs/*"
+        Resource = "${module.log_bucket.s3_bucket_arn}/${var.lambda_logs_folder}/*"
         Condition = {
           StringEquals = {
             "aws:SourceAccount" = data.aws_caller_identity.current.account_id
